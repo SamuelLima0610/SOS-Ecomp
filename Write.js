@@ -7,7 +7,9 @@ class Write {
     }
     async write(filepath, data){
         try{
-            let write = data.map(element => `${JSON.stringify(element)}\r\n`);
+            let write = await data.map(element => `${element.semestre},${element.matricula},${element.nota},${element.resultado}\n`);
+            //`${element.semestre},${element.matricula},${element.nome},${element.media},${element.aprovacao},${element.reprovadoFalta}\r\n`
+            //data.push(write);
             await this.writer(filepath,write);
         }catch(error){
             console.log(error);

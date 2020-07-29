@@ -5,7 +5,7 @@ class First{
         //let write = new Write();
         let array = [];
         data.forEach(object => {
-            let nameFilter = data.filter(element => element.nome == object.nome);
+            let nameFilter = data.filter(element => element.matricula == object.matricula);
             if(array.indexOf(nameFilter[0]) == -1) array.push(nameFilter[0]);
         });
         return array;

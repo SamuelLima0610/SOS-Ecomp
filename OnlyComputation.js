@@ -7,7 +7,7 @@ class OnlyComputation {
             if(programacao.length == 1){
                 let isRepeat = await list.filter(look => element.matricula == look.matricula)
                 if(isRepeat.length <= 0) {
-                    list.push(programacao[0])
+                    //list.push(programacao[0])
                     list.push(element)
                 }
             }

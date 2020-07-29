@@ -16,6 +16,22 @@ class Processor {
         });
         return rows;
     }
+    static ProcessCalculo(data){
+        let split = data.split('\r\n');
+        let rows = [];
+        split.forEach(element => {
+            let row = element.split(';');
+            let json = {
+                matricula: row[0],
+                semestre: row[1],
+                faltas: row[2],
+                nota: row[3],
+                resultado: row[4]
+            }
+            rows.push(json);
+        });
+        return rows;
+    }
 }
 
 module.exports = Processor

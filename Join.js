@@ -18,10 +18,11 @@ class Join {
                 if(student[0].resultado === 'REPROVADO POR FALTA'){
                     reprovadoFalta++ 
                 } 
-                if(student[1].resultado === 'APROVADO POR FALTA'){
+                if(student[1].resultado === 'REPROVADO POR FALTA'){
                     reprovadoFalta++ 
                 } 
-                newElement.reprovadoFalta = (reprovadoFalta / 2) * 100;
+                newElement.aprovacao = (aprovado / 2);
+                newElement.reprovadoFalta = (reprovadoFalta / 2);
             }
             return newElement;
         });
