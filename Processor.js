@@ -17,7 +17,7 @@ class Processor {
         return rows;
     }
     static ProcessCalculo(data){
-        let split = data.split('\r\n');
+        let split = data.split('\n');
         let rows = [];
         split.forEach(element => {
             let row = element.split(';');
