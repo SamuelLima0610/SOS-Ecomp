@@ -3,14 +3,17 @@ const util = require('util');
 
 class Write {
     constructor(){
-        this.writer = util.promisify(fs.appendFile);
+        this.writer = util.promisify(fs.writeFile);
     }
     async write(filepath, data){
         try{
-            let write = await data.map(element => await this.writer(filepath, `${element.semestre},${element.matricula},${element.media},${element.resultado}\n` ,function(err){ if(err) throw err;}));
+            let id = 0
+            let write = await data.map(element => {
+                if(id == 0) return `${id},${element.matricula},${element.repeat},${element.nota}\r\n${++id}`
+                else return `${element.matricula},${element.repeat},${element.nota}\r\n${++id}`
+            });
             //`${element.semestre},${element.matricula},${element.nome},${element.media},${element.aprovacao},${element.reprovadoFalta}\r\n`
-            //data.push(write);
-            //await this.writer(filepath,write);
+            await this.writer(filepath,write);
         }catch(error){
             console.log(error);
         }
