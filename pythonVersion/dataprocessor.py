@@ -77,6 +77,14 @@ def calc_media(dictionary):
         retorno = nota/qtd
     return retorno
 
+def calc_faltas_semestre(dictionary):
+    faltas = 0
+    for i in dictionary:
+        for falta in i["faltas"]:
+            faltas = faltas + int(falta)
+    return faltas
+    
+
 def calc_porc_aprov_rep(dictionary):
     aprov=0
     rep = 0
@@ -95,22 +103,25 @@ def new_csv_file(all_of_them):
     lista = []
     for i in all_of_them:
         perc_rep, perc_aprov = calc_porc_aprov_rep(i["data"])
-        new_dict = {"matricula": i["matricula"], "media":calc_media(i["data"]),"aprov":perc_aprov,"rep":perc_rep}
+        new_dict = {"matricula": i["matricula"], "mediaga":i["data"][2]['nota'],"mediacalculo":i["data"][1]['nota'], "mediaalg":i["data"][0]['nota'] , "aprov":perc_aprov,"rep":perc_rep, "faltas_semestre":calc_faltas_semestre(i["data"]) }
         lista.append(new_dict)
     return lista
 
 def create_file(lista,calc_occurences, ga_occurences, alg_occurences):
     with(open('saida.csv','w')) as file:
-        file.write('matricula, media, aprovacoes, reprovacoes_falta, semestres')
+        file.write('matricula, mediaga, mediacalculo, mediaalgoritmos, aprovacoes, reprovacoes_falta, faltas_semestre, semestres')
         file.write('\n')
         for i in lista:
             semest_calc = calc_occurences[i["matricula"]]
             semest_ga = ga_occurences[i["matricula"]]
             semest_alg = alg_occurences[i["matricula"]]
-            media = "{:.2f}".format(i["media"])
+            faltas_semestre = str(i["faltas_semestre"])
+            mediaga = i["mediaga"]
+            mediacalculo = i["mediacalculo"]
+            mediaalg = i["mediaalg"]
             aprov = "{:.2f}".format(i["aprov"])
             rep = "{:.2f}".format(i["rep"])
-            file.write(i["matricula"]+","+media+","+aprov+","+rep+","+str(max(semest_calc,semest_alg,semest_ga)))
+            file.write(i["matricula"]+","+mediaga+","+mediacalculo+","+mediaalg+","+aprov+","+rep+","+faltas_semestre+","+str(max(semest_calc,semest_alg,semest_ga)))
             file.write('\n')
 
 
@@ -118,17 +129,23 @@ def create_file(lista,calc_occurences, ga_occurences, alg_occurences):
 algoritmos = file_reader('../algoritmos1.csv')
 ga = file_reader('../ga.csv')
 calculo = file_reader2('../CALCULO_novo.csv')
+
 #Get the number of occurences of them
 alg_occurences = all_occurrences(algoritmos)
 ga_occurences = all_occurrences(ga)
 calc_occurences = all_occurrences(calculo)
+
 # Get the first occurence of them 
 algoritmos = first_occurence(algoritmos)
 ga = first_occurence(ga)
 calculo = first_occurence(calculo)
+
+
 #Get the algorithms ids
 alg_ids = get_the_ids(algoritmos) 
 ga_ids = get_the_ids(ga)
+
+
 # Get only the computer students
 ga = matriculated_at_the_first(alg_ids,ga)
 calculo = matriculated_at_the_first(alg_ids,calculo)
